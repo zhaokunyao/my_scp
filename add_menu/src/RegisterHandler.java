@@ -6,13 +6,18 @@ import java.nio.file.Paths;
 
 public class RegisterHandler {
     public void go() throws Exception {
-        String curPath = Paths.get("./").toAbsolutePath().getParent().toString();
+        // String curPath = Paths.get("./").toAbsolutePath().getParent().toString();
 
-        // register 目录名; 属性名 ; 在菜单上的展示文本
-        addRegister("HKEY_CLASSES_ROOT\\*\\shell\\myutil", "MUIVerb", "MyUtil");
-        // 目录乐; 默认属性;
-        addRegister("HKEY_CLASSES_ROOT\\*\\shell\\myutil\\command", "", "\\\"cmd.exe\\\" /k \\\" echo aaaaa-%1\\\"");
+        // todo: first query, if exists, delete it.
+        String key = String.format("HKEY_CLASSES_ROOT\\*\\shell\\%s", Constant.REG_DIR_NAME);
+        String data = Constant.MENU_ITEM_TITLE;
+        addRegister(key, "MUIVerb", data);
 
+        key = String.format("HKEY_CLASSES_ROOT\\*\\shell\\%s\\command", Constant.REG_DIR_NAME);
+
+        // data = "\\\"cmd.exe\\\" /k \\\" echo aaaaa-%1\\\"";
+        data = "\\\"d:\\test.exe\\\" \\\"%1\\\"";
+        addRegister(key, "", data);
     }
 
     private void addRegister(String key, String v, String data) throws Exception {
